@@ -18,4 +18,9 @@
     <string name="opening_hour">영업시간</string>
     <string name="holiday">휴무일</string>
     <string name="contact">연락처</string>
+    <string name="title_activity_map">Map</string>
+    <string name="permission_rationale_location">현재 위치정보 사용 동의</string>
+    <string name="permission_required_toast">권한이 필요합니다.</string>
+    <string name="success_insert">등록 완료</string>
+    <string name="fail_insert">등록 실패</string>
 </resources>

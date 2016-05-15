@@ -7,7 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.bluewave.reservation.activity.LoginActivity;
+import com.bluewave.reservation.activity.MapActivity;
 import com.bluewave.reservation.activity.SignInActivity;
+import com.bluewave.reservation.activity.StoreActivity;
+import com.bluewave.reservation.common.Const;
+import com.bluewave.reservation.model.Store;
 
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -26,6 +30,22 @@ public class BaseActivity extends AppCompatActivity {
 
         return dialog;
     }
+
+    protected void startMapActivity(Store store)
+    {
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
+
+    protected void startStoreActivity(Store store)
+    {
+        Intent intent = new Intent(this, StoreActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
 
     protected void startSignInActivity()
     {

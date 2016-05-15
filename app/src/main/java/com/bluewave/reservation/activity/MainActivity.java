@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Store store = (Store)lvStore.getItemAtPosition(position);
-
+                startStoreActivity(store);
             }
         });
         lvStore.setAdapter(storeAdapter);

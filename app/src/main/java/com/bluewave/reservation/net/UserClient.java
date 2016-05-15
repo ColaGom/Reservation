@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bluewave.reservation.model.Global;
 import com.bluewave.reservation.model.User;
 import com.bluewave.reservation.model.UserPref;
 import com.google.gson.Gson;
@@ -86,6 +87,10 @@ public class UserClient extends Client {
                             }else{
                                 UserPref.putId(id);
                                 UserPref.putPassword(password);
+
+                                User user = new Gson().fromJson(jsonObject.getString("user"), User.class);
+                                Global.setLoginUser(user);
+
                                 handler.onSuccess(jsonObject);
                             }
                         } catch (JSONException e) {

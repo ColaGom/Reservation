@@ -8,7 +8,8 @@
     <ImageView
         android:id="@+id/iv_logo"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/logo_height" />
+        android:layout_height="@dimen/logo_height"
+        android:layout_marginBottom="@dimen/margin_default" />
 
     <TextView
         style="@style/TextStoreSubTitle"
@@ -45,31 +46,45 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_reservation"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_primary_dark_6"
-            android:text="예약하기" />
+            android:text="예약하기"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_waiting"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_rect_primary_dark_6"
+            android:text="대기실"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btn_gps"
             android:layout_width="0dp"
             android:layout_height="48dp"
-            android:textSize="20sp"
-            android:textColor="@android:color/white"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_primary_dark_6"
-            android:text="위치확인" />
+            android:text="위치확인"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
