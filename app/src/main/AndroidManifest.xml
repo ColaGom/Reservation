@@ -28,6 +28,8 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.SignInActivity" />
         <activity android:name=".activity.StoreActivity" />
+        <activity android:name=".activity.ReservationActivity" />
+        <activity android:name=".activity.WaitingActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_default">
+
+    <TextView
+        style="@style/TextSubTitle"
+        android:text="@string/my_waiting" />
+
+    <TextView
+        android:id="@+id/tv_user_waiting"
+        style="@style/TextContent" />
+
+    <TextView
+        style="@style/TextSubTitle"
+        android:text="@string/current_waiting" />
+
+    <TextView
+        android:id="@+id/tv_current_waiting"
+        style="@style/TextContent" />
+
+    <TextView
+        style="@style/TextSubTitle"
+        android:text="@string/prediction_time" />
+
+    <TextView
+        android:id="@+id/tv_prediction_time"
+        style="@style/TextContent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/btn_gps"
+            style="@style/ButtonDefault"
+            android:text="@string/lookat" />
+
+        <Button
+            android:id="@+id/btn_game"
+            style="@style/ButtonDefault"
+            android:text="@string/game" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/btn_waiting_room"
+            style="@style/ButtonDefault"
+            android:text="@string/waiting_room" />
+
+        <Button
+            android:id="@+id/btn_cancel"
+            style="@style/ButtonDefault"
+            android:text="@string/reservation_cancel" />
+
+        <Button
+            android:id="@+id/btn_modify"
+            style="@style/ButtonDefault"
+            android:text="@string/reservation_modify" />
+    </LinearLayout>
+
+
+</LinearLayout>

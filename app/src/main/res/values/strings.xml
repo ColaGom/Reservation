@@ -23,4 +23,17 @@
     <string name="permission_required_toast">권한이 필요합니다.</string>
     <string name="success_insert">등록 완료</string>
     <string name="fail_insert">등록 실패</string>
+    <string name="my_waiting">나의 대기순번</string>
+    <string name="current_waiting">현대 대기인원</string>
+    <string name="prediction_time">대기 예상시간</string>
+    <string name="lookat">위치확인</string>
+    <string name="waiting_room">대기실</string>
+    <string name="reservation">예약하기</string>
+    <string name="game">복불복게임</string>
+    <string name="reservation_cancel">예약취소</string>
+    <string name="reservation_modify">예약조정</string>
+    <string name="enter_chat">채팅방 입장</string>
+    <string name="fail_request_reservation">예약정보 불러오기 실패</string>
+    <string name="yield">양보하기</string>
+    <string name="p2p">1:1 대화신청</string>
 </resources>

@@ -92,7 +92,7 @@ public class StoreActivity extends BaseActivity {
 
     @OnClick(R.id.btn_waiting)
     void onClickWaiting(){
-        //TODO : 대기실 엑티비티 시작
+        startReservationActivity(mStore);
     }
 
     @OnClick(R.id.btn_reservation)

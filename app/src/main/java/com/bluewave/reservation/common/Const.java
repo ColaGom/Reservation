@@ -8,4 +8,5 @@ public class Const {
     public static final String EXTRA_STORE = "extra.store";
     public static final String EXTRA_PASSWORD = "extra.password";
     public static final String URL_LOGO = "http://hpl.dothome.co.kr/server/assets/data/store/";
+    public static final String TAG = "Reservation";
 }

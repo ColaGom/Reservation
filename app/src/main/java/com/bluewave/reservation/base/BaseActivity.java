@@ -8,8 +8,10 @@ import android.widget.Toast;
 
 import com.bluewave.reservation.activity.LoginActivity;
 import com.bluewave.reservation.activity.MapActivity;
+import com.bluewave.reservation.activity.ReservationActivity;
 import com.bluewave.reservation.activity.SignInActivity;
 import com.bluewave.reservation.activity.StoreActivity;
+import com.bluewave.reservation.activity.WaitingActivity;
 import com.bluewave.reservation.common.Const;
 import com.bluewave.reservation.model.Store;
 
@@ -42,6 +44,20 @@ public class BaseActivity extends AppCompatActivity {
     protected void startStoreActivity(Store store)
     {
         Intent intent = new Intent(this, StoreActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
+    protected void startReservationActivity(Store store)
+    {
+        Intent intent = new Intent(this, ReservationActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
+    protected void startWaitingActivity(Store store)
+    {
+        Intent intent = new Intent(this, WaitingActivity.class);
         intent.putExtra(Const.EXTRA_STORE, store);
         startActivity(intent);
     }

@@ -12,36 +12,36 @@
         android:layout_marginBottom="@dimen/margin_default" />
 
     <TextView
-        style="@style/TextStoreSubTitle"
+        style="@style/TextSubTitle"
         android:text="@string/location" />
 
     <TextView
         android:id="@+id/tv_location"
-        style="@style/TextStoreContent" />
+        style="@style/TextContent" />
 
     <TextView
-        style="@style/TextStoreSubTitle"
+        style="@style/TextSubTitle"
         android:text="@string/opening_hour" />
 
     <TextView
         android:id="@+id/tv_opening_hour"
-        style="@style/TextStoreContent" />
+        style="@style/TextContent" />
 
     <TextView
-        style="@style/TextStoreSubTitle"
+        style="@style/TextSubTitle"
         android:text="@string/holiday" />
 
     <TextView
         android:id="@+id/tv_holiday"
-        style="@style/TextStoreContent" />
+        style="@style/TextContent" />
 
     <TextView
-        style="@style/TextStoreSubTitle"
+        style="@style/TextSubTitle"
         android:text="@string/contact" />
 
     <TextView
         android:id="@+id/tv_contact"
-        style="@style/TextStoreContent" />
+        style="@style/TextContent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_primary_dark_6"
-            android:text="예약하기"
+            android:text="@string/reservation"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -69,7 +69,7 @@
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_primary_dark_6"
-            android:text="대기실"
+            android:text="@string/waiting_room"
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:visibility="gone"/>
@@ -82,7 +82,7 @@
             android:layout_marginRight="24dp"
             android:layout_weight="1"
             android:background="@drawable/rounded_rect_primary_dark_6"
-            android:text="위치확인"
+            android:text="@string/lookat"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
