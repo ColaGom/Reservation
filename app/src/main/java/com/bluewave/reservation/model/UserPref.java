@@ -37,7 +37,7 @@ public class UserPref {
     public static void putPassword(String password)
     {
         editor.putString(KEY_PASSWORD, password);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getPassword()
@@ -50,7 +50,7 @@ public class UserPref {
     public static  void putToken(String token)
     {
         editor.putString(KEY_GCM_TOKEN, token);
-        editor.commit();
+        editor.apply();
     }
 
     public static String getToken()
@@ -62,7 +62,7 @@ public class UserPref {
 
     public static  void putRegId(String id){
         editor.putString(KEY_REG_ID,id);
-        editor.commit();
+        editor.apply();
     }
 
     public static  String getRegid()
@@ -75,11 +75,23 @@ public class UserPref {
     public static  void putAppVersion(int version)
     {
         editor.putInt(KEY_APP_VERSION, version);
-        editor.commit();
+        editor.apply();
     }
 
     public static  int getAppVersion()
     {
         return preferences.getInt(KEY_APP_VERSION, 0);
+    }
+
+    private static final String KEY_SENT_TOKEN = "key.send.token";
+
+    public static void putSentToken(boolean value)
+    {
+        editor.putBoolean(KEY_SENT_TOKEN, value).apply();
+    }
+
+    public static boolean getSentToken()
+    {
+        return preferences.getBoolean(KEY_SENT_TOKEN, false);
     }
 }

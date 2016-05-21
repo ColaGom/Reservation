@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "172312087190",
+    "project_id": "level-lyceum-131223"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172312087190:android:138c7f884e13de36",
+        "android_client_info": {
+          "package_name": "com.bluewave.reservation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpDq-TDHwodGJPm5lt5nO5GJ3-aAkoEx4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

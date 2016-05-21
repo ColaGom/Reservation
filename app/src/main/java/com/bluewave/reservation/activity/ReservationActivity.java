@@ -70,7 +70,17 @@ public class ReservationActivity extends BaseActivity {
     @OnClick(R.id.btn_game)
     void onClickGame()
     {
+        StoreClient.joinGame(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                startGameActivity(mStore);
+            }
 
+            @Override
+            public void onFail() {
+                showToast(R.string.fail_join);
+            }
+        },getProgressDialog());
     }
 
     @OnClick(R.id.btn_waiting_room)
@@ -82,12 +92,31 @@ public class ReservationActivity extends BaseActivity {
     @OnClick(R.id.btn_cancel)
     void onClickCancel()
     {
-
+        StoreClient.deleteWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                showToast(R.string.success_delete_waiting);
+                finish();
+            }
+            @Override
+            public void onFail() {
+                showToast(R.string.fail_delete_waiting);
+            }
+        },getProgressDialog());
     }
 
     @OnClick(R.id.btn_modify)
     void onClickModify()
     {
-
+        StoreClient.modifyWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                requestReservationInfo();
+            }
+            @Override
+            public void onFail() {
+                showToast(R.string.fail_modify_waiting);
+            }
+        },getProgressDialog());
     }
 }

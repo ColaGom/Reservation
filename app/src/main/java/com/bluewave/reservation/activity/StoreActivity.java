@@ -61,6 +61,17 @@ public class StoreActivity extends BaseActivity {
         tvHoliday.setText(mStore.holiday);
         tvOpeningHour.setText(mStore.opening_hour);
 
+        requestCheckWaiting();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestCheckWaiting();
+    }
+
+    private void requestCheckWaiting()
+    {
         StoreClient.checkWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
             @Override
             public void onSuccess(Object object) {

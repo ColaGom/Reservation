@@ -25,6 +25,41 @@ public class UserClient extends Client {
 
     private final static String TAG_INSERT_USER = "insert_user";
     private final static String TAG_LOGIN_USER = "login_user";
+    private final static String TAG_UPDATE_GCM_REGID = "update_gcm_regid";
+
+    public static void updateGcmRegId(String user_id, String gcm_regid, final Handler handler)
+    {
+
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_UPDATE_GCM_REGID)
+                .addStringPart("user_id", user_id)
+                .addStringPart("gcm_regid",gcm_regid)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, TAG_UPDATE_GCM_REGID + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                handler.onSuccess(jsonObject);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, TAG_UPDATE_GCM_REGID + " error");
+                        handler.onFail();
+                    }
+                })
+                .execute();
+    }
 
     public static void insertUser(String id, String password,String name, final Handler handler, final SweetAlertDialog dialog)
     {
@@ -64,6 +99,7 @@ public class UserClient extends Client {
                 })
                 .execute();
     }
+
 
     public static void login(final String id, final String password, final Handler handler, final SweetAlertDialog dialog)
     {

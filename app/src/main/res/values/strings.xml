@@ -32,8 +32,20 @@
     <string name="game">복불복게임</string>
     <string name="reservation_cancel">예약취소</string>
     <string name="reservation_modify">예약조정</string>
-    <string name="enter_chat">채팅방 입장</string>
+    <string name="enter_comment">댓글 보기</string>
     <string name="fail_request_reservation">예약정보 불러오기 실패</string>
     <string name="yield">양보하기</string>
     <string name="p2p">1:1 대화신청</string>
+    <string name="send">전송</string>
+    <string name="empty_content">내용을 입력해주세요.</string>
+    <string name="fail_write_comment">댓글 작성 실패.</string>
+    <string name="exit">퇴장</string>
+    <string name="empty_join">참여자가 없습니다.</string>
+    <string name="fail_exit">퇴장 실패</string>
+    <string name="success_exit">퇴장 성공</string>
+    <string name="fail_join">참여 실패</string>
+    <string name="fail_modify_waiting">예약 수정 실패</string>
+    <string name="fail_delete_waiting">예약 취소 실패</string>
+    <string name="success_delete_waiting">예약 취소 성공</string>
+    <string name="gcm_senderId">172312087190</string>
 </resources>

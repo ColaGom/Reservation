@@ -1,7 +1,6 @@
 package com.bluewave.reservation.activity;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,7 +36,7 @@ public class WaitingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Bind(R.id.lv_waiting)
     ListView lvWaiting;
-    @Bind(R.id.swpie_container)
+    @Bind(R.id.swipe_container)
     SwipeRefreshLayout swipeContainer;
     @Bind(R.id.root)
     RelativeLayout root;
@@ -84,7 +83,7 @@ public class WaitingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @Override
     public void onBackPressed() {
-        if(popupWindow.isShowing())
+        if(popupWindow != null && popupWindow.isShowing())
             popupWindow.dismiss();
         else
             super.onBackPressed();
@@ -135,7 +134,7 @@ public class WaitingActivity extends BaseActivity implements SwipeRefreshLayout.
 
     @OnClick(R.id.btn_enter)
     void onClickEnter() {
-
+        startCommentActivity(mStore);
     }
 
     @Override

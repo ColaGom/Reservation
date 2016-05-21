@@ -30,8 +30,10 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.+'
     compile 'com.navercorp.volleyextensions:volleyer:2.0.+'
     compile 'com.navercorp.volleyextensions:volley-caches:2.0.+'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.google.android.gms:play-services:8.4.0'
+    compile "com.google.android.gms:play-services-gcm:8.4.0"
+    compile 'com.google.android.gms:play-services-maps:8.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

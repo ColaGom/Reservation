@@ -1,11 +1,11 @@
 package com.bluewave.reservation.base;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.bluewave.reservation.activity.CommentActivity;
+import com.bluewave.reservation.activity.GameActivity;
 import com.bluewave.reservation.activity.LoginActivity;
 import com.bluewave.reservation.activity.MapActivity;
 import com.bluewave.reservation.activity.ReservationActivity;
@@ -15,7 +15,6 @@ import com.bluewave.reservation.activity.WaitingActivity;
 import com.bluewave.reservation.common.Const;
 import com.bluewave.reservation.model.Store;
 
-import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -51,6 +50,20 @@ public class BaseActivity extends AppCompatActivity {
     protected void startReservationActivity(Store store)
     {
         Intent intent = new Intent(this, ReservationActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
+    protected void startCommentActivity(Store store)
+    {
+        Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        startActivity(intent);
+    }
+
+    protected void startGameActivity(Store store)
+    {
+        Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra(Const.EXTRA_STORE, store);
         startActivity(intent);
     }
