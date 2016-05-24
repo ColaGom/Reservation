@@ -375,6 +375,43 @@ public class StoreClient extends Client {
                 .execute();
     }
 
+
+    public static void checkWaiting(String user_id, final  Handler handler, final  SweetAlertDialog dialog)
+    {
+        dialog.setTitleText("대기정보 확인중...");
+        dialog.show();
+
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_CHECK_WAITING)
+                .addStringPart("user_id", user_id)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_CHECK_WAITING + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                handler.onSuccess(jsonObject.getBoolean("waiting"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_CHECK_WAITING + " error");
+                    }
+                })
+                .execute();
+    }
+
     public static void checkWaiting(String user_id, String store_id, final  Handler handler, final  SweetAlertDialog dialog)
     {
         dialog.setTitleText("대기정보 확인중...");

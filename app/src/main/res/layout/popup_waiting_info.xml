@@ -29,6 +29,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btn_yield"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -36,6 +37,7 @@
                 android:text="@string/yield" />
 
             <Button
+                android:id="@+id/btn_p2p"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"

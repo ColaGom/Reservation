@@ -30,9 +30,49 @@ public class CommentClient extends Client {
     private final static String TAG_INSERT_COMMENT = "insert_comment";
     private final static String TAG_GET_COMMENT = "get_comment";
     private final static String TAG_DELETE_COMMENT = "delete_comment";
+    private  final static String TAG_YIELD_WAITING = "yield_waintg";
 
-    public static void insertComment(String user_id, String store_id, String content,String position, final Handler handler, final SweetAlertDialog dialog)
+    public static void yieldWaiting(String user_id, String oppent_id, String store_id, final Handler handler, final SweetAlertDialog dialog)
     {
+        dialog.setTitleText("양보중...");
+        dialog.show();
+
+        Volleyer.volleyer()
+                .post(URL)
+                .addStringPart(NAME_TAG, TAG_YIELD_WAITING)
+                .addStringPart("user_id", user_id)
+                .addStringPart("oppent_id", oppent_id)
+                .addStringPart("store_id", store_id)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_YIELD_WAITING + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getBoolean("error")) {
+                                handler.onFail();
+                            } else {
+                                handler.onSuccess(jsonObject);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        handler.onFail();
+                        Log.d(TAG, TAG_YIELD_WAITING + "error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void insertComment(String user_id, String store_id, String content, String position, final Handler handler, final SweetAlertDialog dialog) {
         dialog.setTitleText("전송중...");
         dialog.show();
 
@@ -50,9 +90,9 @@ public class CommentClient extends Client {
                         Log.d(TAG, TAG_INSERT_COMMENT + " response : " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getBoolean("error")){
+                            if (jsonObject.getBoolean("error")) {
                                 handler.onFail();
-                            }else{
+                            } else {
                                 handler.onSuccess(jsonObject);
                             }
                         } catch (JSONException e) {
@@ -72,8 +112,7 @@ public class CommentClient extends Client {
                 .execute();
     }
 
-    public static void insertCommentP2P(String sender_id, String recv_id, String content, final Handler handler, final SweetAlertDialog dialog)
-    {
+    public static void insertCommentP2P(String sender_id, String recv_id, String store_id, String content, final Handler handler, final SweetAlertDialog dialog) {
         dialog.setTitleText("전송중...");
         dialog.show();
 
@@ -82,6 +121,7 @@ public class CommentClient extends Client {
                 .addStringPart(NAME_TAG, TAG_INSERT_COMMENT)
                 .addStringPart("sender_id", sender_id)
                 .addStringPart("recv_id", recv_id)
+                .addStringPart("store_id", store_id)
                 .addStringPart("content", content)
                 .withListener(new Response.Listener<String>() {
                     @Override
@@ -90,9 +130,9 @@ public class CommentClient extends Client {
                         Log.d(TAG, TAG_INSERT_COMMENT + "P2P response : " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getBoolean("error")){
+                            if (jsonObject.getBoolean("error")) {
                                 handler.onFail();
-                            }else{
+                            } else {
                                 handler.onSuccess(jsonObject);
                             }
                         } catch (JSONException e) {
@@ -113,15 +153,13 @@ public class CommentClient extends Client {
     }
 
     /**
-     *
      * @param store_id
      * @param sidx
      * @param count
      * @param position game - 복불복 게임, store - 매장
      * @param handler
      */
-    public static void getComment(String store_id, String sidx, String count, String position,final Handler handler)
-    {
+    public static void getComment(String store_id, String sidx, String count, String position, final Handler handler) {
 
         Volleyer.volleyer()
                 .post(URL)
@@ -136,16 +174,15 @@ public class CommentClient extends Client {
                         Log.d(TAG, TAG_GET_COMMENT + " response : " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getBoolean("error")){
+                            if (jsonObject.getBoolean("error")) {
                                 handler.onFail();
-                            }else{
+                            } else {
                                 JSONArray jsonArray = jsonObject.getJSONArray("comments");
 
                                 Gson gson = new Gson();
                                 List<Comment> list = new ArrayList<Comment>();
 
-                                for (int i = 0 ; i < jsonArray.length() ; ++i)
-                                {
+                                for (int i = 0; i < jsonArray.length(); ++i) {
                                     list.add(gson.fromJson(jsonArray.get(i).toString(), Comment.class));
                                 }
 
@@ -167,29 +204,34 @@ public class CommentClient extends Client {
                 .execute();
     }
 
-    public static void getCommentP2P(String sender_id, String recv_id, String sidx, String count, final Handler handler, final SweetAlertDialog dialog)
-    {
-        dialog.setTitleText("댓글 불러오는중...");
-        dialog.show();
-
+    public static void getCommentP2P(String sender_id, String recv_id, String store_id, String sidx, String count, final Handler handler) {
         Volleyer.volleyer()
                 .post(URL)
                 .addStringPart(NAME_TAG, TAG_GET_COMMENT)
                 .addStringPart("sender_id", sender_id)
                 .addStringPart("recv_id", recv_id)
+                .addStringPart("store_id", store_id)
                 .addStringPart("sidx", sidx)
                 .addStringPart("count", count)
                 .withListener(new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        dialog.dismiss();
                         Log.d(TAG, TAG_GET_COMMENT + "P2P response : " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getBoolean("error")){
+                            if (jsonObject.getBoolean("error")) {
                                 handler.onFail();
-                            }else{
-                                handler.onSuccess(jsonObject);
+                            } else {
+                                JSONArray jsonArray = jsonObject.getJSONArray("comments");
+
+                                Gson gson = new Gson();
+                                List<Comment> list = new ArrayList<Comment>();
+
+                                for (int i = 0; i < jsonArray.length(); ++i) {
+                                    list.add(gson.fromJson(jsonArray.get(i).toString(), Comment.class));
+                                }
+
+                                handler.onSuccess(list);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -200,7 +242,6 @@ public class CommentClient extends Client {
                 .withErrorListener(new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        dialog.dismiss();
                         Log.d(TAG, TAG_GET_COMMENT + "P2P error");
                         handler.onFail();
                     }
@@ -208,8 +249,7 @@ public class CommentClient extends Client {
                 .execute();
     }
 
-    public static void deleteComment(String uid, final Handler handler, final SweetAlertDialog dialog)
-    {
+    public static void deleteComment(String uid, final Handler handler, final SweetAlertDialog dialog) {
         Volleyer.volleyer()
                 .post(URL)
                 .addStringPart(NAME_TAG, TAG_DELETE_COMMENT)
@@ -221,9 +261,9 @@ public class CommentClient extends Client {
                         Log.d(TAG, TAG_DELETE_COMMENT + " response : " + response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            if(jsonObject.getBoolean("error")){
+                            if (jsonObject.getBoolean("error")) {
                                 handler.onFail();
-                            }else{
+                            } else {
                                 handler.onSuccess(jsonObject);
                             }
                         } catch (JSONException e) {

@@ -1,8 +1,15 @@
 package com.bluewave.reservation.activity;
 
-import android.content.Intent;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,13 +18,13 @@ import android.widget.TextView;
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.base.BaseActivity;
 import com.bluewave.reservation.common.Const;
+import com.bluewave.reservation.common.PermissionUtils;
 import com.bluewave.reservation.model.Global;
 import com.bluewave.reservation.model.Store;
-import com.bluewave.reservation.model.UserPref;
 import com.bluewave.reservation.net.Client;
 import com.bluewave.reservation.net.StoreClient;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.ImageVideoBitmapDecoder;
+import com.google.android.gms.maps.model.LatLng;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +33,7 @@ import butterknife.OnClick;
 /**
  * Created by Developer on 2016-05-15.
  */
-public class StoreActivity extends BaseActivity {
+public class StoreActivity extends BaseActivity implements OnRequestPermissionsResultCallback {
 
     @Bind(R.id.iv_logo)
     ImageView ivLogo;
@@ -53,13 +60,18 @@ public class StoreActivity extends BaseActivity {
         setContentView(R.layout.activity_store);
         ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
-        mStore = (Store)bundle.getSerializable(Const.EXTRA_STORE);
+        mStore = (Store) bundle.getSerializable(Const.EXTRA_STORE);
 
         Glide.with(this).load(Const.URL_LOGO + mStore.logo_url).crossFade().into(ivLogo);
         tvLocation.setText(mStore.location);
         tvContact.setText(mStore.contact);
         tvHoliday.setText(mStore.holiday);
         tvOpeningHour.setText(mStore.opening_hour);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permission = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+            requestPermissions(permission, REQUEST_PERMISSION);
+        }
 
         requestCheckWaiting();
     }
@@ -70,12 +82,26 @@ public class StoreActivity extends BaseActivity {
         requestCheckWaiting();
     }
 
-    private void requestCheckWaiting()
-    {
+    private void requestInsertWaiting() {
+        StoreClient.insertWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                showToast(R.string.success_insert);
+                setComponent(true);
+            }
+
+            @Override
+            public void onFail() {
+                showToast(R.string.fail_insert);
+            }
+        }, getProgressDialog());
+    }
+
+    private void requestCheckWaiting() {
         StoreClient.checkWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
             @Override
             public void onSuccess(Object object) {
-                Boolean reservation = (Boolean)object;
+                Boolean reservation = (Boolean) object;
                 setComponent(reservation);
             }
 
@@ -83,8 +109,26 @@ public class StoreActivity extends BaseActivity {
             public void onFail() {
                 setComponent(false);
             }
-        },getProgressDialog());
+        }, getProgressDialog());
     }
+
+    private float getDistance() {
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = service.getBestProvider(criteria, false);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return -1;
+        }
+
+        Location userLocation = service.getLastKnownLocation(provider);
+        LatLng storeLocation = mStore.getLatlng();
+        float[] result = new float[1];
+        Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(), storeLocation.latitude, storeLocation.longitude, result);
+
+        return result[0];
+    }
+
 
     private void setComponent(boolean reservation)
     {
@@ -103,27 +147,61 @@ public class StoreActivity extends BaseActivity {
 
     @OnClick(R.id.btn_waiting)
     void onClickWaiting(){
+
         startReservationActivity(mStore);
     }
 
     @OnClick(R.id.btn_reservation)
     void onClickReservation() {
-        StoreClient.insertWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
-            @Override
-            public void onSuccess(Object object) {
-                showToast(R.string.success_insert);
-                setComponent(true);
-            }
 
-            @Override
-            public void onFail() {
-                showToast(R.string.fail_insert);
-            }
-        },getProgressDialog());
+        float distance = getDistance();
+
+        if(distance == -1)
+        {
+            showToast("거리 측정 실패");
+            return;
+        }
+        else if(distance < 500)
+        {
+            StoreClient.checkWaiting(Global.getLoginUser().getId(), new Client.Handler() {
+                @Override
+                public void onSuccess(Object object) {
+                    Boolean result = (Boolean)object;
+                    if(result)
+                    {
+                        showToast(R.string.already_reservation);
+                    }
+                    else
+                    {
+                        requestInsertWaiting();
+                    }
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            },getProgressDialog());
+        }else
+        {
+            showToast("500M 거리 내의 위치에서만 예약가능합니다.");
+        }
     }
 
     @OnClick(R.id.btn_gps)
     void onClickGps() {
         startMapActivity(mStore);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            String[] permission = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+            requestPermissions(permission, REQUEST_PERMISSION);
+            showToast(R.string.need_permission);
+            return;
+        }
     }
 }

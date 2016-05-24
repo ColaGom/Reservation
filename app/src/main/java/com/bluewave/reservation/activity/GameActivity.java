@@ -1,7 +1,12 @@
 package com.bluewave.reservation.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -64,7 +69,14 @@ public class GameActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         });
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(mLocalReceiver, new IntentFilter(Const.ACTION_END_GAME));
         requestJoinUserList();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mLocalReceiver);
+        super.onDestroy();
     }
 
     private void requestJoinUserList()
@@ -171,4 +183,15 @@ public class GameActivity extends BaseActivity implements SwipeRefreshLayout.OnR
             }
         },getProgressDialog());
     }
+
+    BroadcastReceiver mLocalReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Const.ACTION_END_GAME))
+            {
+                showToast(R.string.game_end);
+                finish();
+            }
+        }
+    };
 }

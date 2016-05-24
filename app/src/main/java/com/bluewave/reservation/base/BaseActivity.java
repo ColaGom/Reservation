@@ -8,11 +8,13 @@ import com.bluewave.reservation.activity.CommentActivity;
 import com.bluewave.reservation.activity.GameActivity;
 import com.bluewave.reservation.activity.LoginActivity;
 import com.bluewave.reservation.activity.MapActivity;
+import com.bluewave.reservation.activity.P2PActivity;
 import com.bluewave.reservation.activity.ReservationActivity;
 import com.bluewave.reservation.activity.SignInActivity;
 import com.bluewave.reservation.activity.StoreActivity;
 import com.bluewave.reservation.activity.WaitingActivity;
 import com.bluewave.reservation.common.Const;
+import com.bluewave.reservation.model.ReservationInfo;
 import com.bluewave.reservation.model.Store;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -24,6 +26,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected final int REQUEST_SIGNIN = 1;
     protected final int REQUEST_LOGIN = 2;
+    protected final int REQUEST_PERMISSION = 3;
 
     protected SweetAlertDialog getProgressDialog() {
         SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -39,6 +42,13 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    protected void startP2PActivity(Store store, String oppent_id)
+    {
+        Intent intent = new Intent(this, P2PActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
+        intent.putExtra(Const.EXTRA_OPPENT_ID, oppent_id);
+        startActivity(intent);
+    }
 
     protected void startStoreActivity(Store store)
     {
@@ -68,10 +78,11 @@ public class BaseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected void startWaitingActivity(Store store)
+    protected void startWaitingActivity(Store store, ReservationInfo info)
     {
         Intent intent = new Intent(this, WaitingActivity.class);
         intent.putExtra(Const.EXTRA_STORE, store);
+        intent.putExtra(Const.EXTRA_INFO, info);
         startActivity(intent);
     }
 

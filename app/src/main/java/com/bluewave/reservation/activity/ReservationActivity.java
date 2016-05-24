@@ -30,6 +30,7 @@ public class ReservationActivity extends BaseActivity {
     TextView tvPredictionTime;
 
     private Store mStore;
+    private ReservationInfo mInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,11 +47,11 @@ public class ReservationActivity extends BaseActivity {
         StoreClient.getReservationInfo(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
             @Override
             public void onSuccess(Object object) {
-                ReservationInfo info = (ReservationInfo)object;
+                mInfo = (ReservationInfo)object;
 
-                tvUserWaiting.setText(String.format("%d 번째",info.wait_num));
-                tvCurrentWaiting.setText(String.format("%d 명",info.total_count));
-                tvPredictionTime.setText(String.format("%d 분",(info.wait_num) * 10));
+                tvUserWaiting.setText(String.format("%d 번째",mInfo.wait_num));
+                tvCurrentWaiting.setText(String.format("%d 명",mInfo.total_count));
+                tvPredictionTime.setText(String.format("%d 분",(mInfo.wait_num) * 10));
             }
 
             @Override
@@ -86,7 +87,7 @@ public class ReservationActivity extends BaseActivity {
     @OnClick(R.id.btn_waiting_room)
     void onClickWaitingRoom()
     {
-        startWaitingActivity(mStore);
+        startWaitingActivity(mStore, mInfo);
     }
 
     @OnClick(R.id.btn_cancel)
