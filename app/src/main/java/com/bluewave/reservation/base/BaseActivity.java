@@ -1,10 +1,17 @@
 package com.bluewave.reservation.base;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bluewave.reservation.R;
 import com.bluewave.reservation.activity.CommentActivity;
+import com.bluewave.reservation.activity.EnterActivity;
 import com.bluewave.reservation.activity.GameActivity;
 import com.bluewave.reservation.activity.LoginActivity;
 import com.bluewave.reservation.activity.MapActivity;
@@ -28,6 +35,24 @@ public class BaseActivity extends AppCompatActivity {
     protected final int REQUEST_LOGIN = 2;
     protected final int REQUEST_PERMISSION = 3;
 
+    protected  void setCustomActionbar(int titleRes, boolean backBtn)
+    {
+        ActionBar actionBar = getSupportActionBar();
+
+        if(backBtn)
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_HOME_AS_UP);
+        else
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        View customView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
+        TextView tvTitle = (TextView)customView.findViewById(R.id.title);
+        tvTitle.setText(getString(titleRes));
+
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(customView, params);
+    }
+
+
     protected SweetAlertDialog getProgressDialog() {
         SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         dialog.setCancelable(false);
@@ -47,6 +72,13 @@ public class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent(this, P2PActivity.class);
         intent.putExtra(Const.EXTRA_STORE, store);
         intent.putExtra(Const.EXTRA_OPPENT_ID, oppent_id);
+        startActivity(intent);
+    }
+
+    protected void startEnterActivity(Store store)
+    {
+        Intent intent = new Intent(this, EnterActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, store);
         startActivity(intent);
     }
 

@@ -2,6 +2,8 @@ package com.bluewave.reservation.activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bluewave.reservation.R;
@@ -28,6 +30,8 @@ public class ReservationActivity extends BaseActivity {
     TextView tvCurrentWaiting;
     @Bind(R.id.tv_prediction_time)
     TextView tvPredictionTime;
+    @Bind(R.id.btn_enter)
+    Button btnEnter;
 
     private Store mStore;
     private ReservationInfo mInfo;
@@ -52,6 +56,7 @@ public class ReservationActivity extends BaseActivity {
                 tvUserWaiting.setText(String.format("%d 번째",mInfo.wait_num));
                 tvCurrentWaiting.setText(String.format("%d 명",mInfo.total_count));
                 tvPredictionTime.setText(String.format("%d 분",(mInfo.wait_num) * 10));
+                setComponent();
             }
 
             @Override
@@ -112,6 +117,7 @@ public class ReservationActivity extends BaseActivity {
         StoreClient.modifyWaiting(Global.getLoginUser().getId(), mStore.id, new Client.Handler() {
             @Override
             public void onSuccess(Object object) {
+                showToast(R.string.success_modify_waiting);
                 requestReservationInfo();
             }
             @Override
@@ -120,4 +126,24 @@ public class ReservationActivity extends BaseActivity {
             }
         },getProgressDialog());
     }
+
+    private void setComponent()
+    {
+        if(mInfo.wait_num == 0)
+        {
+            btnEnter.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            btnEnter.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.btn_enter)
+    void onClickEnter()
+    {
+        startEnterActivity(mStore);
+        finish();
+    }
+
 }

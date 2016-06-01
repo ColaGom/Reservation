@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -66,11 +67,19 @@ public class GameActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 swipeContainer.setRefreshing(true);
 
                 requestCommentList();
+                requestJoinUserList();
             }
         });
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mLocalReceiver, new IntentFilter(Const.ACTION_END_GAME));
-        requestJoinUserList();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                StoreClient.checkAndPlayGame(mStore.id);
+            }
+        }, 3000);
     }
 
     @Override
@@ -159,6 +168,7 @@ public class GameActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void onRefresh() {
         mStartIdx = 0;
         requestCommentList();
+        requestJoinUserList();
     }
 
     @OnClick(R.id.btn_send)

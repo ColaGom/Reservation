@@ -66,5 +66,13 @@
             android:text="@string/reservation_modify" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btn_enter"
+        style="@style/ButtonDefault"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/margin_default"
+        android:text="@string/enter"
+        android:visibility="gone"/>
+
 
 </LinearLayout>

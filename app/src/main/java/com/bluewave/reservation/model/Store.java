@@ -16,6 +16,14 @@ public class Store implements Serializable {
     public String opening_hour;
     public String holiday;
     public String contact;
+    public int service_time;
+    public int table_num;
+    public int incomming_hour;
+
+    public int getWaitMinute()
+    {
+        return incomming_hour / (service_time * table_num) * ((service_time * table_num)-incomming_hour);
+    }
 
     public LatLng getLatlng()
     {

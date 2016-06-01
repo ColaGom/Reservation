@@ -38,6 +38,71 @@ public class StoreClient extends Client {
     private final static String TAG_JOIN_GAME = "join_game";
     private final static String TAG_EXIT_GAME = "exit_game";
     private final static String TAG_GET_JOIN_USER_LIST = "get_join_user";
+    private  final static String TAG_YIELD_WAITING = "yield_waiting";
+    private  final static String TAG_CHECK_AND_PLAY_GAME = "check_and_play_game";
+
+    public static void checkAndPlayGame(String store_id)
+    {
+        Volleyer.volleyer()
+                .post(URL)
+                .addStringPart(NAME_TAG, TAG_CHECK_AND_PLAY_GAME)
+                .addStringPart("store_id", store_id)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, TAG_CHECK_AND_PLAY_GAME + " response : " + response);
+
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, TAG_CHECK_AND_PLAY_GAME + " error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void yieldWaiting(String user_id, String opponent_id, String store_id, final Handler handler, final SweetAlertDialog dialog)
+    {
+        dialog.setTitleText("양보중...");
+        dialog.show();
+
+        Volleyer.volleyer()
+                .post(URL)
+                .addStringPart(NAME_TAG, TAG_YIELD_WAITING)
+                .addStringPart("user_id", user_id)
+                .addStringPart("opponent_id", opponent_id)
+                .addStringPart("store_id", store_id)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_YIELD_WAITING + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if (jsonObject.getBoolean("error")) {
+                                handler.onFail();
+                            } else {
+                                handler.onSuccess(jsonObject);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        handler.onFail();
+                        Log.d(TAG, TAG_YIELD_WAITING + "error");
+                    }
+                })
+                .execute();
+    }
+
 
     public static void deleteWaiting(String user_id, String store_id, final Handler handler,final SweetAlertDialog dialog)
     {

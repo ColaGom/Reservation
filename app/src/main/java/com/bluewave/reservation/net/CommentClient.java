@@ -30,47 +30,6 @@ public class CommentClient extends Client {
     private final static String TAG_INSERT_COMMENT = "insert_comment";
     private final static String TAG_GET_COMMENT = "get_comment";
     private final static String TAG_DELETE_COMMENT = "delete_comment";
-    private  final static String TAG_YIELD_WAITING = "yield_waintg";
-
-    public static void yieldWaiting(String user_id, String oppent_id, String store_id, final Handler handler, final SweetAlertDialog dialog)
-    {
-        dialog.setTitleText("양보중...");
-        dialog.show();
-
-        Volleyer.volleyer()
-                .post(URL)
-                .addStringPart(NAME_TAG, TAG_YIELD_WAITING)
-                .addStringPart("user_id", user_id)
-                .addStringPart("oppent_id", oppent_id)
-                .addStringPart("store_id", store_id)
-                .withListener(new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        dialog.dismiss();
-                        Log.d(TAG, TAG_YIELD_WAITING + " response : " + response);
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            if (jsonObject.getBoolean("error")) {
-                                handler.onFail();
-                            } else {
-                                handler.onSuccess(jsonObject);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            handler.onFail();
-                        }
-                    }
-                })
-                .withErrorListener(new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        dialog.dismiss();
-                        handler.onFail();
-                        Log.d(TAG, TAG_YIELD_WAITING + "error");
-                    }
-                })
-                .execute();
-    }
 
     public static void insertComment(String user_id, String store_id, String content, String position, final Handler handler, final SweetAlertDialog dialog) {
         dialog.setTitleText("전송중...");

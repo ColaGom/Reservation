@@ -130,9 +130,10 @@ public class WaitingActivity extends BaseActivity implements SwipeRefreshLayout.
                                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                     @Override
                                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        CommentClient.yieldWaiting(Global.getLoginUser().getId(), info.user_id, mStore.id, new Client.Handler() {
+                                        StoreClient.yieldWaiting(Global.getLoginUser().getId(), info.user_id, mStore.id, new Client.Handler() {
                                             @Override
                                             public void onSuccess(Object object) {
+                                                mInfo.wait_num = info.wait_num;
                                                 showToast(R.string.success_yield);
                                                 requestWaitingList();
                                             }

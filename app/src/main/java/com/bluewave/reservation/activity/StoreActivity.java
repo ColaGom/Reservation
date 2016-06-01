@@ -26,6 +26,8 @@ import com.bluewave.reservation.net.StoreClient;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -113,20 +115,40 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
     }
 
     private float getDistance() {
-        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = service.getBestProvider(criteria, false);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+        Location userLocation = getLastKnownLocation();
+
+        if(userLocation == null)
+        {
             return -1;
         }
 
-        Location userLocation = service.getLastKnownLocation(provider);
         LatLng storeLocation = mStore.getLatlng();
         float[] result = new float[1];
         Location.distanceBetween(userLocation.getLatitude(), userLocation.getLongitude(), storeLocation.latitude, storeLocation.longitude, result);
 
         return result[0];
+    }
+
+    private Location getLastKnownLocation() {
+        LocationManager mLocationManager = (LocationManager)getApplicationContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return null;
+            }
+            Location l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
     }
 
 
@@ -161,31 +183,37 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
             showToast("거리 측정 실패");
             return;
         }
-        else if(distance < 500)
+        else if(mStore.id.equals("pass_dis") || distance < 500)
         {
-            StoreClient.checkWaiting(Global.getLoginUser().getId(), new Client.Handler() {
-                @Override
-                public void onSuccess(Object object) {
-                    Boolean result = (Boolean)object;
-                    if(result)
-                    {
-                        showToast(R.string.already_reservation);
-                    }
-                    else
-                    {
-                        requestInsertWaiting();
-                    }
-                }
-
-                @Override
-                public void onFail() {
-
-                }
-            },getProgressDialog());
-        }else
+            requestChehckAndInsertWaiting();
+        }
+        else
         {
             showToast("500M 거리 내의 위치에서만 예약가능합니다.");
         }
+    }
+
+    private void requestChehckAndInsertWaiting()
+    {
+        StoreClient.checkWaiting(Global.getLoginUser().getId(), new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                Boolean result = (Boolean)object;
+                if(result)
+                {
+                    showToast(R.string.already_reservation);
+                }
+                else
+                {
+                    requestInsertWaiting();
+                }
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        },getProgressDialog());
     }
 
     @OnClick(R.id.btn_gps)

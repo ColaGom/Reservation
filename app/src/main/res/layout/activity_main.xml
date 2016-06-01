@@ -5,9 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity">
 
+
+    <include
+        android:id="@+id/root_bottom"
+        layout="@layout/main_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_alignParentBottom="true" />
+
     <ListView
         android:id="@+id/lv_store"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/root_bottom" />
+
 
 </RelativeLayout>
