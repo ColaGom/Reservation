@@ -2,6 +2,13 @@ package com.bluewave.reservation.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Developer on 2016-05-12.
@@ -23,8 +30,7 @@ public class UserPref {
 
     public static void putId(String userId)
     {
-        editor.putString(KEY_ID, userId);
-        editor.commit();
+        editor.putString(KEY_ID, userId).apply();
     }
 
     public static String getId()
@@ -36,8 +42,7 @@ public class UserPref {
 
     public static void putPassword(String password)
     {
-        editor.putString(KEY_PASSWORD, password);
-        editor.apply();
+        editor.putString(KEY_PASSWORD, password).apply();
     }
 
     public static String getPassword()
@@ -49,8 +54,7 @@ public class UserPref {
 
     public static  void putToken(String token)
     {
-        editor.putString(KEY_GCM_TOKEN, token);
-        editor.apply();
+        editor.putString(KEY_GCM_TOKEN, token).apply();
     }
 
     public static String getToken()
@@ -61,8 +65,7 @@ public class UserPref {
     private  static  final  String KEY_REG_ID = "key.reg.id";
 
     public static  void putRegId(String id){
-        editor.putString(KEY_REG_ID,id);
-        editor.apply();
+        editor.putString(KEY_REG_ID,id).apply();
     }
 
     public static  String getRegid()
@@ -74,8 +77,7 @@ public class UserPref {
 
     public static  void putAppVersion(int version)
     {
-        editor.putInt(KEY_APP_VERSION, version);
-        editor.apply();
+        editor.putInt(KEY_APP_VERSION, version).apply();
     }
 
     public static  int getAppVersion()
@@ -93,5 +95,55 @@ public class UserPref {
     public static boolean getSentToken()
     {
         return preferences.getBoolean(KEY_SENT_TOKEN, false);
+    }
+
+    private static final String KEY_FAVORITE = "key.favorite";
+
+
+    public static List<Integer> getStoreFavoriteList()
+    {
+        String str = preferences.getString(KEY_FAVORITE, "");
+
+        if(TextUtils.isEmpty(str))
+        {
+            return new ArrayList<>();
+        }
+
+        return new Gson().fromJson(str, new TypeToken<List<Integer>>(){}.getType());
+    }
+
+    public static void putStoreFavorite(Integer uid)
+    {
+        List<Integer> list = getStoreFavoriteList();
+        list.add(uid);
+
+        editor.putString(KEY_FAVORITE, new Gson().toJson(list,  new TypeToken<List<Integer>>(){}.getType())).apply();
+    }
+
+    public static void deleteStoreFavorite(Integer uid)
+    {
+        List<Integer> list = getStoreFavoriteList();
+        list.remove(uid);
+
+        editor.putString(KEY_FAVORITE, new Gson().toJson(list,  new TypeToken<List<Integer>>(){}.getType())).apply();
+    }
+
+    public static boolean getStoreFavorite(Integer uid)
+    {
+        return getStoreFavoriteList().contains(uid);
+    }
+
+    public static void switchStoreFavorite(Integer uid)
+    {
+        boolean favorite = !getStoreFavorite(uid);
+
+        if(favorite)
+        {
+            putStoreFavorite(uid);
+        }
+        else
+        {
+            deleteStoreFavorite(uid);
+        }
     }
 }

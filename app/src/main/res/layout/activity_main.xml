@@ -8,10 +8,7 @@
 
     <include
         android:id="@+id/root_bottom"
-        layout="@layout/main_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:layout_alignParentBottom="true" />
+        layout="@layout/bottom_main" />
 
     <ListView
         android:id="@+id/lv_store"

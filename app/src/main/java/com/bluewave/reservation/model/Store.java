@@ -8,6 +8,8 @@ import java.io.Serializable;
  * Created by Developer on 2016-05-14.
  */
 public class Store implements Serializable {
+
+    public Integer uid;
     public String id;
     public String name;
     public String logo_url;

@@ -30,7 +30,14 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_marginBottom">@dimen/margin_default</item>
+    </style>
 
+    <style name="TextStoreInfo">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:layout_marginBottom">@dimen/margin_default</item>
     </style>
 
     <style name="ButtonDefault">
@@ -40,6 +47,16 @@
         <item name="android:background">@drawable/selector_primary_dark_6</item>
         <item name="android:layout_margin">@dimen/margin_default</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextStoreTabSelected">
+        <item name="android:textColor">@android:color/holo_blue_light</item>
+    </style>
+
+
+    <style name="TextStoreTabNormal">
+        <item name="android:textColor">@android:color/darker_gray</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
 

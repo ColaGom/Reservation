@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="46dp"
-    android:orientation="horizontal">
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true">
+
     <LinearLayout
-        android:id="@+id/btn_home"
+        android:id="@+id/btn_gps"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:background="@drawable/selector_skyblue_gray"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/home" />
+            android:text="@string/lookat"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/btn_favorite"
+        android:id="@+id/btn_reservation"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:background="@drawable/selector_blue_gray"
         android:gravity="center"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/favorite" />
+            android:text="@string/reservation"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/btn_waiting_room"
+        android:id="@+id/btn_waiting"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="2"
+        android:background="@drawable/selector_blue_gray"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/waiting_room" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_logout"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/logout" />
+            android:text="@string/waiting_room"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
     </LinearLayout>
 

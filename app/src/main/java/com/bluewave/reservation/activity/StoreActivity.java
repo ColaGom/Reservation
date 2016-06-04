@@ -2,6 +2,7 @@ package com.bluewave.reservation.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -10,17 +11,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.base.BaseActivity;
 import com.bluewave.reservation.common.Const;
 import com.bluewave.reservation.common.PermissionUtils;
+import com.bluewave.reservation.fragment.StoreInfoFragment;
+import com.bluewave.reservation.fragment.StoreReviewFragment;
 import com.bluewave.reservation.model.Global;
 import com.bluewave.reservation.model.Store;
+import com.bluewave.reservation.model.UserPref;
 import com.bluewave.reservation.net.Client;
 import com.bluewave.reservation.net.StoreClient;
 import com.bumptech.glide.Glide;
@@ -29,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.BindColor;
+import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -39,43 +48,115 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
 
     @Bind(R.id.iv_logo)
     ImageView ivLogo;
-    @Bind(R.id.tv_location)
-    TextView tvLocation;
-    @Bind(R.id.tv_contact)
-    TextView tvContact;
-    @Bind(R.id.tv_holiday)
-    TextView tvHoliday;
-    @Bind(R.id.tv_opening_hour)
-    TextView tvOpeningHour;
 
     @Bind(R.id.btn_waiting)
-    Button btnWaiting;
+    LinearLayout btnWaiting;
 
     @Bind(R.id.btn_reservation)
-    Button btnReservation;
+    LinearLayout btnReservation;
+
+    @Bind(R.id.root_fragment)
+    FrameLayout rootFragment;
+
+    @Bind(R.id.btl_info)
+    View btlInfo;
+
+    @Bind(R.id.btl_review)
+    View btlReview;
+
+    @Bind(R.id.tv_info)
+    TextView tvInfo;
+
+    @Bind(R.id.tv_review)
+    TextView tvReview;
+
+    @BindColor(android.R.color.holo_blue_light)
+    int colorBlueLight;
+
+    @BindColor(android.R.color.darker_gray)
+    int colorDarkerGray;
+
+    @Bind(R.id.iv_favorite)
+    ImageView ivFavorite;
+
+    @BindDrawable(android.R.drawable.btn_star_big_on)
+    Drawable drawableStarOn;
+    @BindDrawable(android.R.drawable.btn_star_big_off)
+    Drawable drawableStarOff;
 
     private Store mStore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_store);
-        ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         mStore = (Store) bundle.getSerializable(Const.EXTRA_STORE);
 
-        Glide.with(this).load(Const.URL_LOGO + mStore.logo_url).crossFade().into(ivLogo);
-        tvLocation.setText(mStore.location);
-        tvContact.setText(mStore.contact);
-        tvHoliday.setText(mStore.holiday);
-        tvOpeningHour.setText(mStore.opening_hour);
+        setCustomActionBar(R.layout.actionbar_favorite, mStore.name, true);
+        setContentView(R.layout.activity_store);
+        ButterKnife.bind(this);
+
+        Glide.with(this).load(Const.URL_LOGO + mStore.logo_url).fitCenter().crossFade().into(ivLogo);
+
+        changeStoreInfoFragment();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             String[] permission = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
             requestPermissions(permission, REQUEST_PERMISSION);
         }
 
+        setFavoriteBtn();
+
         requestCheckWaiting();
+    }
+
+    private void setFavoriteBtn()
+    {
+        if(UserPref.getStoreFavorite(mStore.uid))
+        {
+            ivFavorite.setImageDrawable(drawableStarOn);
+        }
+        else
+        {
+            ivFavorite.setImageDrawable(drawableStarOff);
+        }
+    }
+
+    @OnClick(R.id.btn_favorite)
+    void onClickFavorite()
+    {
+        UserPref.switchStoreFavorite(mStore.uid);
+        setFavoriteBtn();
+    }
+
+    @OnClick(R.id.btn_info)
+    void changeStoreInfoFragment()
+    {
+        tvInfo.setTextColor(colorBlueLight);
+        btlInfo.setVisibility(View.VISIBLE);
+
+        tvReview.setTextColor(colorDarkerGray);
+        btlReview.setVisibility(View.GONE);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.replace(R.id.root_fragment, StoreInfoFragment.newInstance(mStore));
+        ft.commit();
+    }
+
+    @OnClick(R.id.btn_review)
+    void changeStoreReviewFragment()
+    {
+        tvInfo.setTextColor(colorDarkerGray);
+        btlInfo.setVisibility(View.GONE);
+
+        tvReview.setTextColor(colorBlueLight);
+        btlReview.setVisibility(View.VISIBLE);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+        ft.replace(R.id.root_fragment, StoreReviewFragment.newInstance(mStore));
+        ft.commit();
     }
 
     @Override

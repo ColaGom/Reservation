@@ -38,6 +38,8 @@
         <activity android:name=".activity.CommentActivity" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".activity.GameActivity" android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activity.P2PActivity" android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".activity.WriteReviewActivity" android:windowSoftInputMode="adjustResize"/>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").

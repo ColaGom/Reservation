@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.bluewave.reservation.R;
@@ -19,7 +19,6 @@ import com.bluewave.reservation.model.Global;
 import com.bluewave.reservation.model.Store;
 import com.bluewave.reservation.model.UserPref;
 import com.bluewave.reservation.net.Client;
-import com.bluewave.reservation.net.CommentClient;
 import com.bluewave.reservation.net.StoreClient;
 import com.bluewave.reservation.net.UserClient;
 import com.google.android.gms.common.ConnectionResult;
@@ -39,7 +38,7 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.lv_store)
     ListView lvStore;
     @Bind(R.id.btn_logout)
-    Button btnLogout;
+    LinearLayout btnLogout;
 
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private int mCurrentSidx = 0;
@@ -48,10 +47,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCustomActionBar(R.layout.actionbar_main, R.string.title_store, false);
         setContentView(R.layout.activity_main);
-        setCustomActionbar(R.string.title_store, false);
         ButterKnife.bind(this);
-        storeAdapter = new StoreAdapter(this, R.layout.row_store_thumb);
+        storeAdapter = new StoreAdapter(this, R.layout.row_store);
+
         lvStore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -150,27 +150,45 @@ public class MainActivity extends BaseActivity {
         }
         return true;
     }
-//
-//    @OnClick(R.id.btn_logout)
-//    void OnClickLogOut() {
-//        new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
-//                .setTitleText(getString(R.string.logout))
-//                .setContentText(getString(R.string.msg_logout))
-//                .setCancelText(getString(R.string.no))
-//                .setConfirmText(getString(R.string.yes))
-//                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                    @Override
-//                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                        Global.setLoginUser(null);
-//                        UserPref.putSentToken(false);
-//                        UserPref.putId("");
-//                        UserPref.putPassword("");
-//                        setComponent();
-//                        startLoginActivity();
-//                        sweetAlertDialog.dismiss();
-//                    }
-//                }).show();
-//    }
+
+    @OnClick(R.id.btn_logout)
+    void OnClickLogOut() {
+        new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText(getString(R.string.logout))
+                .setContentText(getString(R.string.msg_logout))
+                .setCancelText(getString(R.string.no))
+                .setConfirmText(getString(R.string.yes))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        Global.setLoginUser(null);
+                        UserPref.putSentToken(false);
+                        UserPref.putId("");
+                        UserPref.putPassword("");
+                        setComponent();
+                        startLoginActivity();
+                        sweetAlertDialog.dismiss();
+                    }
+                }).show();
+    }
+
+    @OnClick(R.id.btn_home)
+    void onClickHome()
+    {
+
+    }
+
+    @OnClick(R.id.btn_favorite)
+    void onClickFavorite()
+    {
+
+    }
+
+    @OnClick(R.id.btn_waiting_room)
+    void onClickWaitinRoom()
+    {
+
+    }
 
     private void setComponent() {
         if (Global.getLoginUser() == null) {

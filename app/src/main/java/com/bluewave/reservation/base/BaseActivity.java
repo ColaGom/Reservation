@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -35,7 +36,12 @@ public class BaseActivity extends AppCompatActivity {
     protected final int REQUEST_LOGIN = 2;
     protected final int REQUEST_PERMISSION = 3;
 
-    protected  void setCustomActionbar(int titleRes, boolean backBtn)
+    protected void setCustomActionBar(int actionBarRes, int titleRes, boolean backBtn)
+    {
+        setCustomActionBar(actionBarRes,getString(titleRes), backBtn);
+    }
+
+    protected void setCustomActionBar(int actionBarRes, String title, boolean backBtn)
     {
         ActionBar actionBar = getSupportActionBar();
 
@@ -44,14 +50,13 @@ public class BaseActivity extends AppCompatActivity {
         else
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
-        View customView = LayoutInflater.from(this).inflate(R.layout.actionbar_main, null);
+        View customView = LayoutInflater.from(this).inflate(actionBarRes, null);
         TextView tvTitle = (TextView)customView.findViewById(R.id.title);
-        tvTitle.setText(getString(titleRes));
+        tvTitle.setText(title);
 
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(customView, params);
     }
-
 
     protected SweetAlertDialog getProgressDialog() {
         SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -137,5 +142,15 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void showToast(String text) {
         Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
     }
 }
