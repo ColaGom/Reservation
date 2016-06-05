@@ -53,6 +53,8 @@ public class WaitingActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setCustomActionBar(R.layout.actionbar_sub, R.string.waiting_room, true);
         setContentView(R.layout.activity_waiting);
         ButterKnife.bind(this);
 

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.adapter.StoreAdapter;
@@ -24,6 +25,7 @@ import com.bluewave.reservation.net.UserClient;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -181,13 +183,46 @@ public class MainActivity extends BaseActivity {
     @OnClick(R.id.btn_favorite)
     void onClickFavorite()
     {
+        ArrayList<Store> favoriteList = new ArrayList<>();
 
+        for(int i = 0 ; i < storeAdapter.getCount() ; ++i)
+        {
+            Store store = storeAdapter.getItem(i);
+
+            if(UserPref.getStoreFavorite(store.uid))
+            {
+                favoriteList.add(store);
+            }
+        }
+
+        startFavoriteActivity(favoriteList);
     }
 
     @OnClick(R.id.btn_waiting_room)
     void onClickWaitinRoom()
     {
+        StoreClient.getUserWaiting(Global.getLoginUser().getId(), new Client.Handler() {
+            @Override
+            public void onSuccess(Object object) {
+                String store_id = (String) object;
 
+                for(int i = 0 ; i < storeAdapter.getCount() ; ++i)
+                {
+                    Store store = storeAdapter.getItem(i);
+                    if(store.id.equals(store_id))
+                    {
+                        startReservationActivity(store);
+                        return;
+                    }
+                }
+                showToast(R.string.not_exist_waiting);
+            }
+
+            @Override
+            public void onFail() {
+                showToast(R.string.not_exist_waiting);
+            }
+        });
     }
 
     private void setComponent() {

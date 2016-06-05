@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.activity.CommentActivity;
 import com.bluewave.reservation.activity.EnterActivity;
+import com.bluewave.reservation.activity.FavoriteActivity;
 import com.bluewave.reservation.activity.GameActivity;
 import com.bluewave.reservation.activity.LoginActivity;
 import com.bluewave.reservation.activity.MapActivity;
@@ -24,6 +26,9 @@ import com.bluewave.reservation.activity.WaitingActivity;
 import com.bluewave.reservation.common.Const;
 import com.bluewave.reservation.model.ReservationInfo;
 import com.bluewave.reservation.model.Store;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -93,6 +98,14 @@ public class BaseActivity extends AppCompatActivity {
         intent.putExtra(Const.EXTRA_STORE, store);
         startActivity(intent);
     }
+
+    protected void startFavoriteActivity(ArrayList<Store> storeList)
+    {
+        Intent intent = new Intent(this, FavoriteActivity.class);
+        intent.putExtra(Const.EXTRA_STORE, storeList);
+        startActivity(intent);
+    }
+
 
     protected void startReservationActivity(Store store)
     {

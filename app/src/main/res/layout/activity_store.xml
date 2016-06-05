@@ -7,7 +7,8 @@
         android:id="@+id/root_bottom"
         layout="@layout/bottom_store" />
 
-    <ScrollView
+    <com.bluewave.reservation.view.ObservableScrollView
+        android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/root_bottom">
@@ -36,7 +37,7 @@
                     android:background="@drawable/outline_gray_1">
 
                     <TextView
-                        android:id="@+id/tv_star"
+                        android:id="@+id/tv_raiting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -102,6 +103,6 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </ScrollView>
+    </com.bluewave.reservation.view.ObservableScrollView>
 </RelativeLayout>
 

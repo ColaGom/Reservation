@@ -18,6 +18,8 @@ public class Store implements Serializable {
     public String opening_hour;
     public String holiday;
     public String contact;
+    public String review_count;
+    public String raiting_avg;
     public int service_time;
     public int table_num;
     public int incomming_hour;

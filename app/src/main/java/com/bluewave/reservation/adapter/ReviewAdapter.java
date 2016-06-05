@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.common.Const;
+import com.bluewave.reservation.model.Review;
 import com.bluewave.reservation.model.Store;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.target.ImageViewTarget;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,10 +22,11 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 /**
  * Created by Developer on 2016-05-15.
  */
-public class StoreAdapter extends ArrayAdapter<Store> {
+public class ReviewAdapter extends ArrayAdapter<Review> {
     private LayoutInflater inflater;
     private int res;
-    public StoreAdapter(Context context, int resource) {
+
+    public ReviewAdapter(Context context, int resource) {
         super(context, resource);
         inflater = LayoutInflater.from(context);
         res = resource;
@@ -47,25 +47,23 @@ public class StoreAdapter extends ArrayAdapter<Store> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Store data = getItem(position);
+        Review data = getItem(position);
 
-        if(!TextUtils.isEmpty(data.logo_url))
-            Glide.with(getContext()).load(Const.URL_LOGO + data.logo_url).bitmapTransform(new CropCircleTransformation(getContext())).crossFade().into(holder.ivLogo);
-
-        holder.tvTitle.setText(data.name);
-        holder.tvInfo.setText( "평점 " + data.raiting_avg + " 리뷰 " + data.review_count + "\n" + data.contact);
+        holder.tvName.setText(data.user_name);
+        holder.tvDate.setText(data.insert_date + " " + "평점 : " + data.raiting);
+        holder.tvContent.setText(data.content);
 
         return convertView;
     }
 
     class ViewHolder
     {
-        @Bind(R.id.iv_logo)
-        ImageView ivLogo;
-        @Bind(R.id.tv_title)
-        TextView tvTitle;
-        @Bind(R.id.tv_info)
-        TextView tvInfo;
+        @Bind(R.id.tv_name)
+        TextView tvName;
+        @Bind(R.id.tv_date)
+        TextView tvDate;
+        @Bind(R.id.tv_content)
+        TextView tvContent;
 
         void bind(View rootView)
         {

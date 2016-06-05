@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bluewave.reservation.R;
+import com.bluewave.reservation.base.BaseFragment;
 import com.bluewave.reservation.common.Const;
 import com.bluewave.reservation.model.Store;
 
@@ -18,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Developer on 2016-06-05.
  */
-public class StoreInfoFragment extends Fragment{
+public class StoreInfoFragment extends BaseFragment{
 
     @Bind(R.id.tv_location)
     TextView tvLocation;

@@ -71,4 +71,9 @@
     <string name="rating">평점</string>
     <string name="title_write_review">리뷰 작성</string>
     <string name="complete">완료</string>
+    <string name="not_exist_waiting">예약하신 매장이 없습니다.</string>
+    <string name="input_content">내용을 입력해주세요.</string>
+    <string name="fail_write_review">리뷰작성 실패.</string>
+    <string name="success_write_review">리뷰 작성 완료.</string>
+    <string name="current_waiting_number">현재 입장 번호</string>
 </resources>

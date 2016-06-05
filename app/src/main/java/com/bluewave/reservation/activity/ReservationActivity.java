@@ -39,6 +39,8 @@ public class ReservationActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setCustomActionBar(R.layout.actionbar_sub, R.string.reservation, true);
         setContentView(R.layout.activity_reservation);
         ButterKnife.bind(this);
 

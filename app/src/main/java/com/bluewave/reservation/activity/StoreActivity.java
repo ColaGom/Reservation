@@ -3,7 +3,6 @@ package com.bluewave.reservation.activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.bluewave.reservation.R;
 import com.bluewave.reservation.base.BaseActivity;
 import com.bluewave.reservation.common.Const;
-import com.bluewave.reservation.common.PermissionUtils;
 import com.bluewave.reservation.fragment.StoreInfoFragment;
 import com.bluewave.reservation.fragment.StoreReviewFragment;
 import com.bluewave.reservation.model.Global;
@@ -30,6 +27,7 @@ import com.bluewave.reservation.model.Store;
 import com.bluewave.reservation.model.UserPref;
 import com.bluewave.reservation.net.Client;
 import com.bluewave.reservation.net.StoreClient;
+import com.bluewave.reservation.view.ObservableScrollView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -46,6 +44,8 @@ import butterknife.OnClick;
  */
 public class StoreActivity extends BaseActivity implements OnRequestPermissionsResultCallback {
 
+    @Bind(R.id.sv)
+    ObservableScrollView scrollView;
     @Bind(R.id.iv_logo)
     ImageView ivLogo;
 
@@ -57,6 +57,9 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
 
     @Bind(R.id.root_fragment)
     FrameLayout rootFragment;
+
+    @Bind(R.id.tv_raiting)
+    TextView tvRaiting;
 
     @Bind(R.id.btl_info)
     View btlInfo;
@@ -106,7 +109,8 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
         }
 
         setFavoriteBtn();
-
+        setTvReview();
+        setTvRaiting();
         requestCheckWaiting();
     }
 
@@ -120,6 +124,16 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
         {
             ivFavorite.setImageDrawable(drawableStarOff);
         }
+    }
+
+    private void setTvReview()
+    {
+        tvReview.setText(String.format("리뷰(%s)", mStore.review_count));
+    }
+
+    private void setTvRaiting()
+    {
+        tvRaiting.setText(String.format("평점(%s)", mStore.raiting_avg));
     }
 
     @OnClick(R.id.btn_favorite)
@@ -138,6 +152,8 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
         tvReview.setTextColor(colorDarkerGray);
         btlReview.setVisibility(View.GONE);
 
+        scrollView.setScrollViewListener(null);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         ft.replace(R.id.root_fragment, StoreInfoFragment.newInstance(mStore));
@@ -153,9 +169,13 @@ public class StoreActivity extends BaseActivity implements OnRequestPermissionsR
         tvReview.setTextColor(colorBlueLight);
         btlReview.setVisibility(View.VISIBLE);
 
+        StoreReviewFragment fragment = StoreReviewFragment.newInstance(mStore);
+
+        scrollView.setScrollViewListener(fragment);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-        ft.replace(R.id.root_fragment, StoreReviewFragment.newInstance(mStore));
+        ft.replace(R.id.root_fragment, fragment);
         ft.commit();
     }
 

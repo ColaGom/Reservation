@@ -1,78 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/padding_default">
-
-    <TextView
-        style="@style/TextSubTitle"
-        android:text="@string/my_waiting" />
-
-    <TextView
-        android:id="@+id/tv_user_waiting"
-        style="@style/TextContent" />
-
-    <TextView
-        style="@style/TextSubTitle"
-        android:text="@string/current_waiting" />
-
-    <TextView
-        android:id="@+id/tv_current_waiting"
-        style="@style/TextContent" />
-
-    <TextView
-        style="@style/TextSubTitle"
-        android:text="@string/prediction_time" />
-
-    <TextView
-        android:id="@+id/tv_prediction_time"
-        style="@style/TextContent" />
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:background="@color/light_gray"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <Button
-            android:id="@+id/btn_gps"
-            style="@style/ButtonDefault"
-            android:text="@string/lookat" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect_primary_6"
+            android:padding="10dp">
 
-        <Button
-            android:id="@+id/btn_game"
-            style="@style/ButtonDefault"
-            android:text="@string/game" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/my_waiting"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_user_waiting"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@android:color/white"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect_white_6"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/current_waiting"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_current_waiting"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@android:color/black"
+                        android:textSize="32sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_default"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/prediction_time"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="16sp" />
+
+
+                    <TextView
+                        android:id="@+id/tv_prediction_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_gps"
+                    style="@style/ButtonDefault"
+                    android:text="@string/lookat" />
+
+                <Button
+                    android:id="@+id/btn_game"
+                    style="@style/ButtonDefault"
+                    android:text="@string/game" />
+
+                <Button
+                    android:id="@+id/btn_waiting_room"
+                    style="@style/ButtonDefault"
+                    android:text="@string/waiting_room" />
+
+                <Button
+                    android:id="@+id/btn_cancel"
+                    style="@style/ButtonDefault"
+                    android:text="@string/reservation_cancel" />
+
+                <Button
+                    android:id="@+id/btn_modify"
+                    style="@style/ButtonDefault"
+                    android:text="@string/reservation_modify" />
+
+                <Button
+                    android:id="@+id/btn_enter"
+                    style="@style/ButtonDefault"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/margin_default"
+                    android:text="@string/enter"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
-
-        <Button
-            android:id="@+id/btn_waiting_room"
-            style="@style/ButtonDefault"
-            android:text="@string/waiting_room" />
-
-        <Button
-            android:id="@+id/btn_cancel"
-            style="@style/ButtonDefault"
-            android:text="@string/reservation_cancel" />
-
-        <Button
-            android:id="@+id/btn_modify"
-            style="@style/ButtonDefault"
-            android:text="@string/reservation_modify" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_enter"
-        style="@style/ButtonDefault"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/margin_default"
-        android:text="@string/enter"
-        android:visibility="gone"/>
-
-
-</LinearLayout>
+</ScrollView>

@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bluewave.reservation.model.Comment;
 import com.bluewave.reservation.model.GameUser;
 import com.bluewave.reservation.model.ReservationInfo;
+import com.bluewave.reservation.model.Review;
 import com.bluewave.reservation.model.Store;
 import com.bluewave.reservation.model.WaitingInfo;
 import com.google.gson.Gson;
@@ -40,6 +42,10 @@ public class StoreClient extends Client {
     private final static String TAG_GET_JOIN_USER_LIST = "get_join_user";
     private  final static String TAG_YIELD_WAITING = "yield_waiting";
     private  final static String TAG_CHECK_AND_PLAY_GAME = "check_and_play_game";
+    private final static String TAG_GET_USER_WAITING = "get_user_waiting";
+    private final static String TAG_INSERT_REVIEW = "insert_review";
+    private final static String TAG_DELETE_REVIEW = "delete_review";
+    private final static String TAG_GET_REVIEW_LIST = "get_review_list";
 
     public static void checkAndPlayGame(String store_id)
     {
@@ -472,6 +478,159 @@ public class StoreClient extends Client {
                     public void onErrorResponse(VolleyError error) {
                         dialog.dismiss();
                         Log.d(TAG, TAG_CHECK_WAITING + " error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void getUserWaiting(String user_id, final  Handler handler)
+    {
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_GET_USER_WAITING)
+                .addStringPart("user_id", user_id)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, TAG_GET_USER_WAITING + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                handler.onSuccess(jsonObject.getString("store_id"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, TAG_GET_USER_WAITING + " error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void getReivewList(String store_id, String sidx, String count, final  Handler handler, final  SweetAlertDialog dialog)
+    {
+        dialog.setTitleText("리뷰 불러오는중...");
+        dialog.show();
+
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_GET_REVIEW_LIST)
+                .addStringPart("store_id", store_id)
+                .addStringPart("sidx", sidx)
+                .addStringPart("count", count)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_GET_REVIEW_LIST + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                JSONArray jsonArray = jsonObject.getJSONArray("review");
+
+                                Gson gson = new Gson();
+                                List<Review> list = new ArrayList<>();
+
+                                for (int i = 0; i < jsonArray.length(); ++i) {
+                                    list.add(gson.fromJson(jsonArray.get(i).toString(), Review.class));
+                                }
+
+                                handler.onSuccess(list);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_GET_REVIEW_LIST + " error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void insertReview(String user_id, String store_id,String content,float raiting, final  Handler handler, final  SweetAlertDialog dialog)
+    {
+        dialog.setTitleText("리뷰 작성중...");
+        dialog.show();
+
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_INSERT_REVIEW)
+                .addStringPart("user_id", user_id)
+                .addStringPart("store_id", store_id)
+                .addStringPart("content", content)
+                .addStringPart("raiting", raiting + "")
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_INSERT_REVIEW + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                handler.onSuccess(jsonObject);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_INSERT_REVIEW + " error");
+                    }
+                })
+                .execute();
+    }
+
+    public static void deleteReview(String uid, final  Handler handler, final  SweetAlertDialog dialog)
+    {
+        dialog.setTitleText("리뷰 삭제중...");
+        dialog.show();
+
+        Volleyer.volleyer().post(URL)
+                .addStringPart(NAME_TAG, TAG_DELETE_REVIEW)
+                .addStringPart("uid", uid)
+                .withListener(new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_DELETE_REVIEW + " response : " + response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            if(jsonObject.getBoolean("error")){
+                                handler.onFail();
+                            }else{
+                                handler.onSuccess(jsonObject.getBoolean("waiting"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            handler.onFail();
+                        }
+                    }
+                })
+                .withErrorListener(new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        Log.d(TAG, TAG_DELETE_REVIEW + " error");
                     }
                 })
                 .execute();
