@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:layout_marginRight="4dp"
         android:background="@android:color/white"
         android:orientation="horizontal"
-        android:padding="4dp"
-        android:layout_marginRight="4dp">
+        android:padding="4dp">
 
         <EditText
             android:id="@+id/et_input"
@@ -30,15 +30,37 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_join"
-        style="@style/TextSubTitle" />
+    <LinearLayout
+        android:id="@+id/root_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_default">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/game_rule"
+            android:textColor="@android:color/black"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_join"
+            android:layout_width="120dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_rect_primary_16"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/root_join_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_join"
+        android:layout_below="@id/root_info"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -46,7 +68,7 @@
     <Button
         android:id="@+id/btn_exit"
         style="@style/ButtonDefault"
-        android:layout_below="@id/root_join_user"
+        android:layout_above="@id/root_input"
         android:layout_centerHorizontal="true"
         android:text="@string/exit" />
 
@@ -54,9 +76,9 @@
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btn_exit"
-        android:layout_above="@id/root_input">
-        
+        android:layout_above="@id/btn_exit"
+        android:layout_below="@id/root_info">
+
         <ListView
             android:id="@+id/lv_comment"
             android:layout_width="match_parent"

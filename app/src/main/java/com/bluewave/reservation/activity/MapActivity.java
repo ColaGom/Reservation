@@ -31,6 +31,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback, Goo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCustomActionBar(R.layout.actionbar_sub, mStore.name, true);
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

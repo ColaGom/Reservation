@@ -51,7 +51,7 @@ public class GameActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setCustomActionBar(R.layout.actionbar_sub,R.string.game, true);
         setContentView(R.layout.activity_game);
         ButterKnife.bind(this);
         mStore = (Store)getIntent().getSerializableExtra(Const.EXTRA_STORE);

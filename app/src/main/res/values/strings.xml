@@ -76,4 +76,5 @@
     <string name="fail_write_review">리뷰작성 실패.</string>
     <string name="success_write_review">리뷰 작성 완료.</string>
     <string name="current_waiting_number">현재 입장 번호</string>
+    <string name="game_rule">3명 참여시 순번 셔플</string>
 </resources>
